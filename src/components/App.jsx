@@ -9,12 +9,9 @@ class App extends Component {
 
   state = {
     contacts: [],
-    filter: '',
-    name: [],  
+    filter: '',  
   };
   
-  
-
   
   onGetContact = (data) => {
     
@@ -25,8 +22,6 @@ class App extends Component {
       number,
       name,
     }
-
-  
 
     this.setState(prevState => ({
       contacts: [user, ...prevState.contacts],
@@ -65,9 +60,9 @@ class App extends Component {
     }))
   };
 
-  render() {
+  render() { 
 
-    const { contacts, filter , name} = this.state;
+    const { contacts, filter} = this.state;
 
     
 
