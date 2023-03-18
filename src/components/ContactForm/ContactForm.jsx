@@ -9,33 +9,47 @@ class ContactForm extends Component {
 
     state = {
         name: '',
-        number: '',
+        number: '', 
     }; 
      
     oldName = [];
-    localStorageName = [];
-
-
-    static propTypes = {
-        onSubmit: PropTypes.func.isRequired,
-    }
       
- 
-   
+    static propTypes = {
+            onSubmit: PropTypes.func.isRequired,
+            contacts: PropTypes.arrayOf(PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            name: PropTypes.string.isRequired,
+            number: PropTypes.string.isRequired,
+        }))
+    }
+
 
     onInputChange = (e) => {
         const { name, value } = e.currentTarget
         this.setState({
-        [name]: value,     
+        [name]: value,    
         })
     };
 
     onAddContact = (e) => {
         e.preventDefault();
     
+        const {contacts} = this.props;
+
+
+        if (contacts.find(contact => contact.name === this.state.name)) {
+        alert(`${this.state.name} is already in contacts.`);
+         this.reset();    
+         return;
+        };
+        
+
+
         if (this.oldName.length === 0) {
             this.props.onSubmit(this.state);
         }
+
+        
 
         if (this.oldName.length >= 1 && this.oldName.includes(this.state.name)) {
             let currentIndex = this.oldName.indexOf(this.state.name);
@@ -46,9 +60,9 @@ class ContactForm extends Component {
         if (this.oldName.length >= 1 && !this.oldName.includes(this.state.name)) {
             this.props.onSubmit(this.state);     
         }
-  
+        
         this.oldName.push(this.state.name);
-          
+        
         this.reset();
     };
     
@@ -56,7 +70,7 @@ class ContactForm extends Component {
     reset = () => {
         this.setState({ name: "", number: "" });
    }
-   
+
 
     
     render() {

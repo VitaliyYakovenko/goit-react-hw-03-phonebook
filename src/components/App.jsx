@@ -8,12 +8,13 @@ import ContactList from "./ContactList/ContactList";
 class App extends Component {
 
   state = {
-        contacts: [],
-        filter: '',
+    contacts: [],
+    filter: '',
+    name: [],  
   };
   
-  InputIdFilter = nanoid();
   
+
   
   onGetContact = (data) => {
     
@@ -21,31 +22,37 @@ class App extends Component {
     
     const user = {
       id: 'id' + nanoid(),
-      name,
       number,
+      name,
     }
-    
-    
+
+  
+
     this.setState(prevState => ({
-      contacts: [user, ...prevState.contacts],  
+      contacts: [user, ...prevState.contacts],
     }))
     
   };
+
   componentDidMount(nextProps, prevState) {
     const contacts = localStorage.getItem("contacts");
     const parseContacts = JSON.parse(contacts);
     if (parseContacts) {
+      
       this.setState({ contacts: parseContacts });
+
     }
   }
-  componentDidUpdate(prevProps, prevState) {
-  
+
+   componentDidUpdate(prevProps, prevState) {
+     
     if (this.state.contacts !== prevState.contacts) {
       localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
     }
-    
+     
   }
-   
+  
+ 
   
   
    onChangeFilter = (e) => {
@@ -59,18 +66,25 @@ class App extends Component {
   };
 
   render() {
-    const { contacts, filter } = this.state;
-  
+
+    const { contacts, filter , name} = this.state;
+
+    
+
     const normalizedName = filter.toLowerCase();
     const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(normalizedName));
-  
+      
+          
+    
 
     return (
+       
       <div className={css.phonebook}>
         <div className={css.phonebook__inform}>
         <h1 className={css.phonebook__titel}>Phonebook</h1>
           <ContactForm
+            contacts = {contacts}
             onSubmit={this.onGetContact}
           />
 
